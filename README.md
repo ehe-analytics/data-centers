@@ -17,7 +17,7 @@ Open `docs/index.html` in a browser (it needs internet only to load d3 from a CD
     data/air_sites.json              whole-record summary per location (hourly-based means and peaks)
     data/epa_background_daily.json   EPA regulatory monitor daily values
     data/weather_dulles_daily.json   Dulles daily rain and wind
-    data/noise.json                  noise measurements table
+    data/noise.json                  noise measurements table (28 rows)
     data/sites_meta.json             location metadata and the data-quality rules applied
     data/raw/kunak_hourly_agg.json   per-location, per-day [hours, mean, max] straight from the Kunak feed
     data/epa_aqs_raw_extract.json    EPA AQS rows as pulled
