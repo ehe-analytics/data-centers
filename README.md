@@ -8,7 +8,7 @@ Open `docs/index.html` in a browser (it needs internet only to load d3 from a CD
 
 - **Air sensors:** Virginia DEQ's Data Center Air Monitoring Project (Kunak AIR sensors, PM2.5, NO2, CO) for 14 locations in Loudoun and Prince William counties, Feb 24 to Nov 1, 2026, summarized to Eastern Standard Time days.
 - **Background:** EPA Air Quality System daily summaries for the regulatory monitors: PM2.5 at Broad Run HS (Loudoun), NO2 at Broad Run HS and James S. Long Park (Prince William). EPA has no CO monitor in either county. The sensor at Broad Run HS is collocated with the EPA monitor.
-- **Weather:** observed daily rain and wind at Dulles International Airport (station IAD), from the Iowa Environmental Mesonet.
+- **Weather:** observed daily rain and wind at Dulles International Airport (station IAD), from the Iowa Environmental Mesonet. Pulled but not shown on the page; reserved for formal analysis.
 - **Noise:** 18 published measurements compiled from Bray and Dominici (arXiv 2610.03975) and the sources it cites, with each source's verifiability tier.
 
 ## Layout

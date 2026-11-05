@@ -19,6 +19,7 @@ body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(-
 <style>
 .dc{max-width:68rem;margin-inline:auto;display:flex;flex-direction:column;gap:var(--cds-gap-lg);font-family:var(--font-anthropic-sans);color:var(--color-fg)}
 .dc h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.dc h3{font-size:var(--cds-font-size-caption);font-weight:var(--cds-font-weight-medium);margin:.5rem 0 0;color:var(--color-fg-muted);text-transform:uppercase;letter-spacing:.04em}
 .dc h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
 .dc p{margin:0;line-height:1.5}
 .dc .mut{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
@@ -43,7 +44,7 @@ body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(-
 <div class="dc" id="top">
 <header>
 <h1 id="title">Data center air quality and noise</h1>
-<p id="takeaway">Air quality data from Virginia DEQ's low-cost air sensors near data centers in Loudoun and Prince William counties, and from EPA's regulatory monitors for background comparison; weather data from Dulles airport; includes a table of published noise measurements. Pulled November 5, 2026.</p>
+<p id="takeaway">Air quality data from Virginia DEQ's low-cost air sensors near data centers in Loudoun and Prince William counties, and from EPA's regulatory monitors for background comparison; includes a table of published noise measurements. Pulled November 5, 2026.</p>
 </header>
 
 <section class="card" id="air-chart">
@@ -57,9 +58,7 @@ body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(-
 </div></div>
 <p class="mut">One line per DEQ sensor location. Dark dashed line is EPA's regulatory monitor for background: PM2.5 at Broad Run HS, NO2 at Broad Run HS and James S. Long Park. EPA has no CO monitor in either county and thus has no reference.</p>
 <div class="chart" data-draw="airchart" data-source="air_daily background"></div>
-<div class="chart" data-draw="rainchart" data-source="air_daily weather"></div>
-<div class="chart" data-draw="windchart" data-source="air_daily weather"></div>
-<p class="mut">Lower panels: daily rain, average wind speed, and average wind direction (degrees clockwise from north; 0 and 360 = from the north, 90 = east, 180 = south, 270 = west) at Dulles airport, from station observations. Hover for values. Each location's first appearance and any gaps reflect when its sensor was in service.</p>
+<p class="mut">Each location's first appearance and any gaps reflect when its sensor was in service.</p>
 </section>
 
 <section class="card" id="reading">
@@ -69,9 +68,9 @@ body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(-
 <li>Less consistency between NO2 sensor readings and the EPA monitor.</li>
 <li>Not possible to compare CO sensor readings with the EPA monitor.</li>
 <li>The large PM2.5 event around July 16-18 affected multiple sites, including the EPA monitor. It could be related to wildfire smoke from Canada, which news reports describe across the region on those dates (<a href="https://www.capitalweather.com/wildfire-smoke-invades-dc-area-with-some-of-the-worst-air-quality-on-record/" target="_blank" rel="noopener">Capital Weather Gang</a>; <a href="https://www.potomaclocal.com/2026/07/17/widespread-smoke-from-canadian-wildfires-creates-hazardous-air-quality-across-northern-virginia/" target="_blank" rel="noopener">Potomac Local</a>). The possibility of other contributing sources, such as a backup-generator run reported at Vantage VA2 in Sterling on July 16-17 (<a href="https://www.yahoo.com/news/us/articles/virginia-couldnt-stop-sterling-data-192539891.html" target="_blank" rel="noopener">Virginia Mercury</a>), cannot be eliminated without further analysis.</li>
-<li>Across the record, days with higher average wind speed have lower PM2.5 readings, and days with northerly average wind direction have lower readings than days with southerly or easterly direction. July and August are highest. Days with rain read slightly higher on average, at the sensors and at the EPA monitor.</li>
+
 </ul>
-<p class="mut">This is a first pass using what could be pulled quickly. Further analysis (see Next steps) could test these patterns.</p>
+<p class="mut">This is a first pass using what could be pulled quickly. Further analysis (see Potential next steps) could test these patterns.</p>
 </section>
 
 <section class="card" id="sites">
@@ -102,7 +101,7 @@ body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(-
 <ul>
 <li>Air sensors: Virginia DEQ Data Center Air Monitoring Project (Kunak AIR), hourly readings summarized to days. Days are Eastern Standard Time. A daily mean needs at least 18 valid hours; the highest-hour view shows the largest single hourly reading that day.</li>
 <li>Reference: EPA Air Quality System daily summaries for the regulatory monitors. These are recent and may not be fully validated. PM2.5 uses the hourly-derived daily mean where at least 18 hours exist, otherwise the 24-hour filter value.</li>
-<li>Weather: observed daily summaries from the Dulles International Airport station, not modeled. Dulles is not at the sensor locations.</li>
+
 <li>DEQ's stabilization period (before March 3) and its voided first-week PM2.5 (before March 9) are excluded for the original five locations.</li>
 <li>Heritage Farm Museum is cut off after May 28: its PM2.5 went flat near zero before DEQ pulled the sensor.</li>
 <li>NO2 sensor readings are low confidence: collocation with the regulatory monitor shows weak agreement. PM2.5 agreement is moderate to good.</li>
@@ -112,19 +111,35 @@ body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(-
 </section>
 
 <section class="card" id="next">
-<h2>Next steps</h2>
+<h2>Potential next steps</h2>
 <p class="mut">This page uses data that could be pulled quickly. The items below would add to it; each takes additional time.</p>
+<h3>Analyses</h3>
 <div class="scroll"><table>
 <thead><tr><th>Item</th><th>What it adds</th><th>What it needs</th></tr></thead>
 <tbody>
-<tr><td>Hourly analysis with hourly wind direction</td><td>Tests whether readings differ when a site is downwind of a data center</td><td>Hourly weather and site-by-site geometry</td></tr>
-<tr><td>Multi-year PM2.5 baseline</td><td>Context from before and after data center build-out; the <a href="https://www.loudounclimateproject.org/" target="_blank" rel="noopener">Loudoun Climate Project</a> PurpleAir network has 12 stations from 2021 to June 2026</td><td>Download and clean large yearly files</td></tr>
-<tr><td>Backup-generator run hours and emissions</td><td>Whether generator operation lines up with sensor readings</td><td>DEQ permit and records requests</td></tr>
+<tr><td>Weather relationships</td><td>Formal tests (for example correlation and regression) of sensor readings against wind speed, wind direction and rain, instead of reading patterns off charts</td><td>Observed hourly or daily weather, ideally closer to the sensors than the airport</td></tr>
+<tr><td>How levels fluctuate</td><td>Time-of-day, day-of-week and seasonal patterns, and how closely sensor locations track each other and the EPA monitor</td><td>Hourly sensor data (already pulled)</td></tr>
+<tr><td>Downwind comparison</td><td>Tests whether readings differ when a site is downwind of a data center</td><td>Hourly wind direction and site-by-site geometry</td></tr>
 <tr><td>Sensor-to-monitor correction</td><td>Sensors read below the EPA monitor at high PM2.5 at the Broad Run collocation; a correction would make levels more comparable</td><td>Collocation analysis</td></tr>
 <tr><td>Confirm the July 16-18 event</td><td>Distinguish regional smoke from local sources</td><td>Additional monitors, hourly AirNow data, smoke-plume data</td></tr>
-<tr><td>Low-frequency and continuous noise data</td><td>C-weighted and octave-band levels, which the published figures mostly lack</td><td>Loudoun County enforcement records, JLARC data, or new measurements</td></tr>
-<tr><td>Verify reported noise measurements</td><td>Moves rows from press or resident reports toward documented measurements</td><td>Contact sources, locate original reports</td></tr>
 <tr><td>Additional sensor sites</td><td>DEQ has been adding locations</td><td>Re-pull the DEQ feed</td></tr>
+</tbody></table></div>
+<h3>Additional data to screen and review</h3>
+<p class="mut">None of these is on this page yet. Items marked "not yet reviewed" were identified but not read in full.</p>
+<div class="scroll"><table>
+<thead><tr><th>Source</th><th>What it is</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><a href="https://www.loudounclimateproject.org/" target="_blank" rel="noopener">Loudoun Climate Project</a></td><td>12 PurpleAir PM2.5 sensors (Sterling, Ashburn, Lansdowne and others); bulk yearly downloads from 2021 through June 7, 2026. Would add a multi-year baseline, including years before data center build-out. PM2.5 only.</td><td>Not downloaded</td></tr>
+<tr><td>PurpleAir public map</td><td>Any public sensor; API access needs a key</td><td>Not reviewed</td></tr>
+<tr><td><a href="https://www.deq.virginia.gov/home/showpublisheddocument/39902/639289566639522187" target="_blank" rel="noopener">Virginia DEQ preliminary analysis</a></td><td>DEQ's own analysis of the pilot data; the page is updated weekly</td><td>Not yet reviewed</td></tr>
+<tr><td>Generator run hours and stack emissions</td><td>No public data found. Would come from a records request to DEQ for permit reports.</td><td>Records request needed</td></tr>
+<tr><td>Memphis (xAI) air study</td><td>University of Memphis analysis reported to find minimal air change after the facility opened</td><td>Not yet reviewed (articles could not be opened)</td></tr>
+<tr><td>EDGI analysis</td><td>Analysis of pollution near EPA-regulated data centers</td><td>Not yet reviewed (could not be opened)</td></tr>
+<tr><td><a href="https://data.gov.ie/" target="_blank" rel="noopener">Dublin ambient sound network</a></td><td>Dublin City Council monitors, 2010-2017, 5-minute readings (Leq, L10, L95), CC BY 4.0. Calibrated, but not tied to data centers; would serve as an urban baseline only.</td><td>Not downloaded</td></tr>
+<tr><td>Vineland, NJ health inspection</td><td>A March 2026 county health inspection reported in a compilation to have found night noise above 50 dB and issued a violation</td><td>Not yet reviewed (the article found had no measured levels)</td></tr>
+<tr><td>Dowagiac, MI city fines</td><td>Fines reported under a 65/55 dBA ordinance, disputed by the operator</td><td>Not yet reviewed</td></tr>
+<tr><td>Low-frequency and continuous noise data</td><td>C-weighted and octave-band levels, which the published figures mostly lack. Possible sources: Loudoun County enforcement records, JLARC, or new measurements.</td><td>Requests or new measurements needed</td></tr>
+<tr><td>Reported noise measurements</td><td>Verify press and resident reports in the noise table against original documents</td><td>Ongoing</td></tr>
 </tbody></table></div>
 </section>
 
@@ -135,7 +150,6 @@ body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(-
 <li><a href="https://kunakcloud.com/websites/VirginiaDEQ.html" target="_blank" rel="noopener">Kunak Cloud, Virginia DEQ sensor feed</a></li>
 <li><a href="https://www.deq.virginia.gov/home/showpublisheddocument/39902/639289566639522187" target="_blank" rel="noopener">Virginia DEQ, October 30 analysis</a></li>
 <li><a href="https://aqs.epa.gov/aqsweb/documents/data_api.html" target="_blank" rel="noopener">EPA Air Quality System (AQS) API</a></li>
-<li><a href="https://mesonet.agron.iastate.edu/request/daily.phtml" target="_blank" rel="noopener">Iowa Environmental Mesonet, daily weather summaries</a></li>
 <li><a href="https://arxiv.org/abs/2610.03975" target="_blank" rel="noopener">Bray and Dominici, review of data center noise (arXiv 2610.03975)</a></li>
 <li><a href="https://www.capitalweather.com/wildfire-smoke-invades-dc-area-with-some-of-the-worst-air-quality-on-record/" target="_blank" rel="noopener">Capital Weather Gang, wildfire smoke in the DC area</a></li>
 <li><a href="https://www.potomaclocal.com/2026/07/17/widespread-smoke-from-canadian-wildfires-creates-hazardous-air-quality-across-northern-virginia/" target="_blank" rel="noopener">Potomac Local, smoke across Northern Virginia</a></li>
@@ -215,58 +229,6 @@ dash.draw('airchart',el=>{
      const tw=tip.node().offsetWidth;tip.style('left',Math.max(0,Math.min(w-tw,x(best.p.d)-tw/2))+'px').style('top',Math.max(0,y(best.p.v)-34)+'px');
    })
    .on('mouseleave',()=>{hl.attr('d',null);dot.attr('display','none');tip.style('display','none');});
-});
-dash.draw('rainchart',el=>{
-  const g=dash.data('air_daily'),wd=dash.data('weather');
-  if(!ok(g)||!ok(wd)){el.replaceChildren();return;}
-  const w=Math.max(280,el.clientWidth),h=90,m={t:6,r:ml.r,b:18,l:ml.l};
-  const dom=xDomain();
-  const rows=wd.data.map(r=>({...r,d:D(r.day)})).filter(r=>r.d>=dom[0]&&r.d<=dom[1]);
-  const x=d3.scaleUtc(dom,[m.l,w-m.r]);
-  const y=d3.scaleLinear([0,Math.max(0.5,d3.max(rows,r=>r.precip_in))],[h-m.b,m.t]).nice();
-  const bw=Math.max(1,(w-m.l-m.r)/rows.length-.5);
-  el.replaceChildren();
-  const svg=d3.select(el).append('svg').attr('viewBox',`0 0 ${w} ${h}`).attr('width','100%').attr('height',h);
-  axisStyle(svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(2).tickSize(0)).call(a=>a.select('.domain').remove()));
-  axisStyle(svg.append('g').attr('transform',`translate(0,${h-m.b})`).call(d3.axisBottom(x).ticks(Math.max(3,Math.floor(w/90))).tickSize(0).tickFormat(d3.utcFormat('%b'))).call(a=>a.select('.domain').attr('stroke','var(--cds-chart-axis)')));
-  svg.append('text').attr('x',m.l+2).attr('y',m.t+8).attr('font-size',11).attr('fill','var(--color-fg-muted)').text('Rain, inches per day');
-  const tip=d3.select(el).append('div').attr('class','tip').style('display','none');
-  svg.append('g').selectAll('rect').data(rows.filter(r=>r.precip_in>0)).join('rect').attr('x',r=>x(r.d)-bw/2).attr('width',bw).attr('y',r=>y(r.precip_in)).attr('height',r=>h-m.b-y(r.precip_in)).attr('fill',dash.colors[2]||dash.colors[0]).attr('rx',1);
-  const bis=d3.bisector(r=>r.d).center;
-  svg.append('rect').attr('x',m.l).attr('y',0).attr('width',w-m.l-m.r).attr('height',h-m.b).attr('fill','transparent')
-   .on('mousemove',ev=>{const [mx]=d3.pointer(ev);const r=rows[bis(rows,x.invert(mx))];if(!r)return;
-     tip.style('display',null).text(`${d3.utcFormat('%b %-d')(r.d)}: rain ${d3.format('.2f')(r.precip_in)} in`);
-     const tw=tip.node().offsetWidth;tip.style('left',Math.max(0,Math.min(w-tw,x(r.d)-tw/2))+'px').style('top','0px');})
-   .on('mouseleave',()=>tip.style('display','none'));
-});
-dash.draw('windchart',el=>{
-  const g=dash.data('air_daily'),wd=dash.data('weather');
-  if(!ok(g)||!ok(wd)){el.replaceChildren();return;}
-  const w=Math.max(280,el.clientWidth),h1=90,h2=100,h=h1+h2,m={t:6,r:ml.r,b:18,l:ml.l};
-  const dom=xDomain();
-  const rows=wd.data.map(r=>({...r,d:D(r.day)})).filter(r=>r.d>=dom[0]&&r.d<=dom[1]);
-  const x=d3.scaleUtc(dom,[m.l,w-m.r]);
-  const y1=d3.scaleLinear([0,d3.max(rows,r=>r.wind_kts)||1],[h1-m.b,m.t]).nice();
-  const y2=d3.scaleLinear([0,360],[h-m.b,h1+m.t]);
-  el.replaceChildren();
-  const svg=d3.select(el).append('svg').attr('viewBox',`0 0 ${w} ${h}`).attr('width','100%').attr('height',h);
-  axisStyle(svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y1).ticks(3).tickSize(0)).call(a=>a.select('.domain').remove()));
-  svg.append('text').attr('x',m.l+2).attr('y',m.t+8).attr('font-size',11).attr('fill','var(--color-fg-muted)').text('Average wind speed, knots');
-  const ln=d3.line().defined(r=>r.wind_kts!=null&&r.wind_kts!=='').x(r=>x(r.d)).y(r=>y1(+r.wind_kts));
-  svg.append('path').attr('d',ln(rows)).attr('fill','none').attr('stroke',dash.colors[1]||dash.colors[0]).attr('stroke-width',1.25).attr('stroke-linejoin','round');
-  svg.append('g').selectAll('line').data([0,90,180,270,360]).join('line').attr('x1',m.l).attr('x2',w-m.r).attr('y1',d=>y2(d)).attr('y2',d=>y2(d)).attr('stroke','var(--cds-chart-grid)');
-  const lab={0:'N',90:'E',180:'S',270:'W',360:'N'};
-  svg.append('g').selectAll('text').data([0,90,180,270,360]).join('text').attr('x',m.l-6).attr('y',d=>y2(d)+4).attr('text-anchor','end').attr('font-size',11).attr('fill','var(--color-fg-muted)').text(d=>lab[d]);
-  svg.append('text').attr('x',m.l+2).attr('y',h1+m.t+8).attr('font-size',11).attr('fill','var(--color-fg-muted)').text('Average wind direction (from)');
-  svg.append('g').selectAll('circle').data(rows.filter(r=>r.wind_dir!=null&&r.wind_dir!=='')).join('circle').attr('cx',r=>x(r.d)).attr('cy',r=>y2(+r.wind_dir)).attr('r',2).attr('fill',dash.colors[1]||dash.colors[0]).attr('fill-opacity',.8);
-  axisStyle(svg.append('g').attr('transform',`translate(0,${h-m.b})`).call(d3.axisBottom(x).ticks(Math.max(3,Math.floor(w/90))).tickSize(0).tickFormat(d3.utcFormat('%b'))).call(a=>a.select('.domain').attr('stroke','var(--cds-chart-axis)')));
-  const tip=d3.select(el).append('div').attr('class','tip').style('display','none');
-  const bis=d3.bisector(r=>r.d).center;
-  svg.append('rect').attr('x',m.l).attr('y',0).attr('width',w-m.l-m.r).attr('height',h-m.b).attr('fill','transparent')
-   .on('mousemove',ev=>{const [mx]=d3.pointer(ev);const r=rows[bis(rows,x.invert(mx))];if(!r)return;
-     tip.style('display',null).text(`${d3.utcFormat('%b %-d')(r.d)}: wind ${d3.format('.0f')(r.wind_kts)} kt from ${d3.format('.0f')(r.wind_dir)}°`);
-     const tw=tip.node().offsetWidth;tip.style('left',Math.max(0,Math.min(w-tw,x(r.d)-tw/2))+'px').style('top','0px');})
-   .on('mouseleave',()=>tip.style('display','none'));
 });
 const fmt=(v,d)=>v===''||v==null?'':d3.format('.'+d+'f')(+v);
 const dm=d3.utcFormat('%b %-d, %Y');
