@@ -1,0 +1,10 @@
+# data files and generated output (not pushed)
+data/
+docs/index.html
+
+# misc
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+.env

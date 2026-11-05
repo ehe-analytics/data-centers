@@ -1,0 +1,199 @@
+<meta name="dash-one-writer">
+<style>
+.dc{max-width:68rem;margin-inline:auto;display:flex;flex-direction:column;gap:var(--cds-gap-lg);font-family:var(--font-anthropic-sans);color:var(--color-fg)}
+.dc h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.dc h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
+.dc p{margin:0;line-height:1.5}
+.dc .mut{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.dc .card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-sm);min-width:0}
+.dc .seg button{font:inherit;font-size:var(--cds-font-size-caption);padding:.3rem .8rem;border:1px solid var(--color-border-line);background:transparent;color:var(--color-fg);border-radius:var(--cds-radius);cursor:pointer}
+.dc button[aria-pressed=true]{background:var(--color-fg);color:var(--color-bg)}
+.dc .seg{display:flex;gap:.25rem;flex-wrap:wrap}
+.dc .row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--cds-gap-sm)}
+.dc .chart{position:relative}
+.dc .chart svg{display:block;width:100%}
+.dc .tip{position:absolute;pointer-events:none;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);white-space:nowrap;z-index:2}
+.dc .scroll{overflow-x:auto;max-height:26rem;overflow-y:auto}
+.dc table{border-collapse:collapse;width:100%;font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums}
+.dc th{position:sticky;top:0;background:var(--color-panel);text-align:left;font-weight:var(--cds-font-weight-medium);color:var(--color-fg-muted);padding:.4rem .6rem;border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.dc td{padding:.4rem .6rem;border-bottom:1px solid var(--color-border-line);vertical-align:top}
+.dc td.n,.dc th.n{text-align:right}
+.dc .badge{display:inline-block;padding:0 .4rem;border:1px solid var(--color-border-line);border-radius:var(--cds-radius);font-size:var(--cds-font-size-caption)}
+.dc ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.35rem;line-height:1.45}
+.dc .key{display:flex;gap:1rem;flex-wrap:wrap;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.dc .key i{display:inline-block;width:1.6rem;height:0;border-top:2px solid;vertical-align:middle;margin-right:.35rem}
+</style>
+<div class="dc" id="top">
+<header>
+<h1 id="title">Data center air quality and noise</h1>
+<p id="takeaway">A one-time snapshot of Virginia DEQ's low-cost air sensors near data centers in Loudoun and Prince William counties, set against EPA's regulatory monitors and observed weather, with a sourced table of published noise measurements. Pulled November 5, 2026; not updating.</p>
+</header>
+
+<section class="card" id="air-chart">
+<div class="row"><h2>Daily air readings</h2>
+<div class="seg" role="group" aria-label="Pollutant, statistic and reference">
+<button data-pol="pm" aria-pressed="true">PM2.5</button><button data-pol="no" aria-pressed="false">NO2</button><button data-pol="co" aria-pressed="false">CO</button>
+<span style="width:.5rem"></span>
+<button data-stat="mean" aria-pressed="true">Daily mean</button><button data-stat="max" aria-pressed="false">Highest hour</button>
+<span style="width:.5rem"></span>
+<button data-ref="1" aria-pressed="true">EPA monitor</button>
+</div></div>
+<p class="mut">One thin line per DEQ sensor location (sensors move between locations; each line is a location). Hover to pick one out. The dark dashed line is EPA's regulatory monitor, the best available measure of background: PM2.5 at Broad Run HS, NO2 at Broad Run HS and James S. Long Park. EPA has no CO monitor in either county, so CO has no reference.</p>
+<div class="chart" data-draw="airchart" data-source="air_daily background"></div>
+<div class="chart" data-draw="rainchart" data-source="air_daily weather"></div>
+<p class="mut">Lower panel: rain at Dulles airport, from station observations. Hover for that day's average wind speed and direction. Each location's first appearance and any gaps reflect when its sensor was in service.</p>
+</section>
+
+<section class="card" id="reading">
+<h2>What the record shows</h2>
+<ul>
+<li>The sensors track the regulatory monitor closely day to day at Broad Run HS, where the two are collocated, and their typical levels sit at the same low level as the monitor's. Sensor-to-monitor agreement is much weaker for NO2.</li>
+<li>The largest PM2.5 event in the record hits every site on the same days around July 16-18, including sites many miles apart and the EPA monitor, which is not near a data center. A regional event like that is the likely explanation. Its cause is not established here, and the monitor's own record is not yet flagged as an exceptional event.</li>
+<li>At the peak the sensors read well below the regulatory monitor, so they understate large PM2.5 events.</li>
+<li>Windier days are cleaner, and days with northerly winds are cleaner than days with southerly or easterly winds. July and August run highest. Rain does not give a simple wash-out: days with rain read slightly higher on average, at the sensors and at the EPA monitor, and humidity can inflate optical sensor readings.</li>
+<li>On daily averages no location runs persistently far above its neighbors; the differences between locations are small. Dulles Airport, DEQ's upwind site, reads a little lower than the rest. Testing for a facility-specific signal needs hourly data with wind direction by hour, which is the next step if the client wants it.</li>
+</ul>
+</section>
+
+<section class="card" id="sites">
+<h2>Sensor locations</h2>
+<p class="mut">Whole-record figures from hourly data (not the daily averages above). Units: PM2.5 µg/m³, NO2 ppb, CO ppm.</p>
+<div class="scroll">
+<table data-source="air_sites" data-row-key="loc">
+<thead><tr><th data-field="site">Location</th><th data-field="county">County</th><th data-field="first">From</th><th data-field="last">To</th><th class="n" data-field="pm_mean">PM2.5 mean</th><th class="n" data-field="pm_max">PM2.5 peak hour</th><th data-field="pm_max_day">Peak day</th><th class="n" data-field="no_mean">NO2 mean</th><th class="n" data-field="no_max">NO2 peak hour</th><th class="n" data-field="co_mean">CO mean</th></tr></thead>
+<tbody data-draw="sitesrows"></tbody>
+</table>
+</div>
+</section>
+
+<section class="card" id="noise">
+<h2>Published noise measurements near data centers</h2>
+<p class="mut">Collected from the Bray and Dominici narrative review (arXiv 2610.03975), which graded each source by how verifiable it is. Levels are not comparable to one another: positions, weightings and instruments differ, and many are not stated. Tonal low-frequency content (roughly 70-140 Hz) is what most complaints describe.</p>
+<div class="scroll">
+<table data-source="noise" data-row-key="id">
+<thead><tr><th data-field="site">Site</th><th data-field="level">Reported level</th><th data-field="position">Position</th><th data-field="freq">Frequency</th><th data-field="instrument">Instrument</th><th data-field="by">Measured or reported by</th><th data-field="date">Date</th><th data-field="tier">Tier</th><th data-field="source">Source</th></tr></thead>
+<tbody data-draw="noiserows"></tbody>
+</table>
+</div>
+<p class="mut">Tier: T2 official filing or county presentation; T3 consultant report naming its instrument; T4 press or official statement; T5 unverified resident reading. No source reaches T1 (calibrated, documented, independent). Tier labels per row are partly inferred from source type. Full source URLs are in the data behind this table.</p>
+</section>
+
+<section class="card" id="notes">
+<h2>How to read this</h2>
+<ul>
+<li>Air sensors: Virginia DEQ Data Center Air Monitoring Project (Kunak AIR), hourly readings summarized to days. Days are Eastern Standard Time. A daily mean needs at least 18 valid hours; the highest-hour view shows the largest single hourly reading that day.</li>
+<li>Reference: EPA Air Quality System daily summaries for the regulatory monitors. These are recent and may not be fully validated. PM2.5 uses the hourly-derived daily mean where at least 18 hours exist, otherwise the 24-hour filter value.</li>
+<li>Weather: observed daily summaries from the Dulles International Airport station (Iowa Environmental Mesonet), not modeled.</li>
+<li>DEQ's stabilization period (before March 3) and its voided first-week PM2.5 (before March 9) are excluded for the original five locations.</li>
+<li>Heritage Farm Museum is cut off after May 28: its PM2.5 went flat near zero before DEQ pulled the sensor.</li>
+<li>NO2 sensor readings are low confidence: collocation with the regulatory monitor shows weak agreement. PM2.5 agreement is moderate to good.</li>
+<li>CO readings here run slightly higher than DEQ's published table in places.</li>
+<li>Sensors are not regulatory instruments and cannot be used to judge attainment of air standards. The two newest Prince William locations have only about ten days of data.</li>
+</ul>
+</section>
+</div>
+<script>
+(function(){
+const root=document.getElementById('dash-root');
+const state={pol:'pm',stat:'mean',ref:true};
+const F={pm:['pm','pmx','µg/m³','PM2.5'],no:['no','nox','ppb','NO2'],co:['co','cox','ppm','CO']};
+root.querySelectorAll('[data-pol],[data-stat],[data-ref]').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.pol)state.pol=b.dataset.pol; else if(b.dataset.stat)state.stat=b.dataset.stat; else state.ref=!state.ref;
+  root.querySelectorAll('[data-pol],[data-stat],[data-ref]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.pol?x.dataset.pol===state.pol:x.dataset.stat?x.dataset.stat===state.stat:state.ref)));
+  dash.draw('airchart');
+}));
+const EPISODE=new Date('2026-07-16T00:00:00Z');
+const ml={t:12,r:12,b:26,l:44};
+const ok=g=>g&&g.status==='ok';
+const D=s=>new Date(s+'T00:00:00Z');
+function axisStyle(sel){sel.selectAll('text').attr('fill','var(--color-fg-muted)').attr('font-size',11).attr('font-family',null);}
+function gapify(pts){pts.sort((a,b)=>a.d-b.d);const o=[];pts.forEach((p,i)=>{if(i&&p.d-pts[i-1].d>3*864e5)o.push(null);o.push(p);});return o;}
+function xDomain(){const g=dash.data('air_daily');const ds=g.data.map(r=>r.day).sort();return [D(ds[0]),D(ds[ds.length-1])];}
+dash.draw('airchart',el=>{
+  const g=dash.data('air_daily'),bgd=dash.data('background');
+  if(!ok(g)){el.replaceChildren();return;}
+  const [kMean,kMax,unit,label]=F[state.pol];const f=state.stat==='mean'?kMean:kMax;
+  const by=new Map();
+  for(const r of g.data){const v=r[f];if(v==null)continue;(by.get(r.site)||by.set(r.site,[]).get(r.site)).push({d:D(r.day),v:+v});}
+  const series=[...by.entries()].map(([site,pts])=>({site,ref:false,pts:gapify(pts)}));
+  const refs=[];
+  if(state.ref&&state.pol!=='co'&&ok(bgd)){
+    const rb=new Map();
+    for(const r of bgd.data){const v=r[f];if(v==null)continue;(rb.get(r.site)||rb.set(r.site,[]).get(r.site)).push({d:D(r.day),v:+v});}
+    for(const [site,pts] of rb){ if(state.pol==='pm'&&!site.startsWith('Broad'))continue; refs.push({site,ref:true,pts:gapify(pts)}); }
+  }
+  const w=Math.max(280,el.clientWidth),h=300;
+  const all=series.concat(refs).flatMap(s=>s.pts).filter(Boolean);
+  const x=d3.scaleUtc(xDomain(),[ml.l,w-ml.r]);
+  const y=d3.scaleLinear([0,d3.max(all,p=>p.v)*1.05],[h-ml.b,ml.t]).nice();
+  el.replaceChildren();
+  const svg=d3.select(el).append('svg').attr('viewBox',`0 0 ${w} ${h}`).attr('width','100%').attr('height',h);
+  svg.append('g').selectAll('line').data(y.ticks(5)).join('line').attr('x1',ml.l).attr('x2',w-ml.r).attr('y1',d=>y(d)).attr('y2',d=>y(d)).attr('stroke','var(--cds-chart-grid)');
+  axisStyle(svg.append('g').attr('transform',`translate(${ml.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(0)).call(a=>a.select('.domain').remove()));
+  axisStyle(svg.append('g').attr('transform',`translate(0,${h-ml.b})`).call(d3.axisBottom(x).ticks(Math.max(3,Math.floor(w/90))).tickSize(0).tickFormat(d3.utcFormat('%b'))).call(a=>a.select('.domain').attr('stroke','var(--cds-chart-axis)')));
+  svg.append('text').attr('x',ml.l+2).attr('y',ml.t+8).attr('font-size',11).attr('fill','var(--color-fg-muted)').text(`${label}, ${unit}`);
+  if(x(EPISODE)>ml.l&&x(EPISODE)<w-ml.r)svg.append('line').attr('x1',x(EPISODE)).attr('x2',x(EPISODE)).attr('y1',ml.t).attr('y2',h-ml.b).attr('stroke','var(--cds-chart-reference)').attr('stroke-dasharray','3 3');
+  const line=d3.line().defined(p=>p).x(p=>x(p.d)).y(p=>y(p.v));
+  svg.append('g').selectAll('path').data(series).join('path').attr('d',s=>line(s.pts)).attr('fill','none').attr('stroke','var(--cds-chart-muted)').attr('stroke-width',1.1).attr('stroke-linejoin','round').attr('stroke-opacity',.75);
+  svg.append('g').selectAll('path').data(refs).join('path').attr('d',s=>line(s.pts)).attr('fill','none').attr('stroke','var(--color-fg)').attr('stroke-width',1.75).attr('stroke-dasharray','5 3').attr('stroke-linejoin','round');
+  const cand=series.concat(refs);
+  const hl=svg.append('path').attr('fill','none').attr('stroke',dash.colors[0]).attr('stroke-width',2.25).attr('stroke-linecap','round').attr('stroke-linejoin','round');
+  const dot=svg.append('circle').attr('r',4).attr('fill',dash.colors[0]).attr('stroke','var(--color-panel)').attr('stroke-width',2).attr('display','none');
+  const tip=d3.select(el).append('div').attr('class','tip').style('display','none');
+  svg.append('rect').attr('x',ml.l).attr('y',ml.t).attr('width',w-ml.l-ml.r).attr('height',h-ml.t-ml.b).attr('fill','transparent')
+   .on('mousemove',ev=>{
+     const [mx,my]=d3.pointer(ev);let best=null,bd=1e9;
+     for(const s of cand)for(const p of s.pts){if(!p)continue;const d=Math.hypot(x(p.d)-mx,(y(p.v)-my)*1.4);if(d<bd){bd=d;best={s,p};}}
+     if(!best)return;
+     hl.attr('d',line(best.s.pts));dot.attr('display',null).attr('cx',x(best.p.d)).attr('cy',y(best.p.v));
+     tip.style('display',null).text(`${best.s.site}: ${d3.utcFormat('%b %-d')(best.p.d)}, ${d3.format(state.pol==='co'?'.2f':'.1f')(best.p.v)} ${unit}`);
+     const tw=tip.node().offsetWidth;tip.style('left',Math.max(0,Math.min(w-tw,x(best.p.d)-tw/2))+'px').style('top',Math.max(0,y(best.p.v)-34)+'px');
+   })
+   .on('mouseleave',()=>{hl.attr('d',null);dot.attr('display','none');tip.style('display','none');});
+});
+dash.draw('rainchart',el=>{
+  const g=dash.data('air_daily'),wd=dash.data('weather');
+  if(!ok(g)||!ok(wd)){el.replaceChildren();return;}
+  const w=Math.max(280,el.clientWidth),h=90,m={t:6,r:ml.r,b:18,l:ml.l};
+  const dom=xDomain();
+  const rows=wd.data.map(r=>({...r,d:D(r.day)})).filter(r=>r.d>=dom[0]&&r.d<=dom[1]);
+  const x=d3.scaleUtc(dom,[m.l,w-m.r]);
+  const y=d3.scaleLinear([0,Math.max(0.5,d3.max(rows,r=>r.precip_in))],[h-m.b,m.t]).nice();
+  const bw=Math.max(1,(w-m.l-m.r)/rows.length-.5);
+  el.replaceChildren();
+  const svg=d3.select(el).append('svg').attr('viewBox',`0 0 ${w} ${h}`).attr('width','100%').attr('height',h);
+  axisStyle(svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(2).tickSize(0)).call(a=>a.select('.domain').remove()));
+  axisStyle(svg.append('g').attr('transform',`translate(0,${h-m.b})`).call(d3.axisBottom(x).ticks(Math.max(3,Math.floor(w/90))).tickSize(0).tickFormat(d3.utcFormat('%b'))).call(a=>a.select('.domain').attr('stroke','var(--cds-chart-axis)')));
+  svg.append('text').attr('x',m.l+2).attr('y',m.t+8).attr('font-size',11).attr('fill','var(--color-fg-muted)').text('Rain, inches per day');
+  const tip=d3.select(el).append('div').attr('class','tip').style('display','none');
+  svg.append('g').selectAll('rect').data(rows.filter(r=>r.precip_in>0)).join('rect').attr('x',r=>x(r.d)-bw/2).attr('width',bw).attr('y',r=>y(r.precip_in)).attr('height',r=>h-m.b-y(r.precip_in)).attr('fill',dash.colors[2]||dash.colors[0]).attr('rx',1);
+  const bis=d3.bisector(r=>r.d).center;
+  svg.append('rect').attr('x',m.l).attr('y',0).attr('width',w-m.l-m.r).attr('height',h-m.b).attr('fill','transparent')
+   .on('mousemove',ev=>{const [mx]=d3.pointer(ev);const r=rows[bis(rows,x.invert(mx))];if(!r)return;
+     tip.style('display',null).text(`${d3.utcFormat('%b %-d')(r.d)}: rain ${d3.format('.2f')(r.precip_in)} in, wind ${d3.format('.0f')(r.wind_kts)} kt from ${r.wind_dir}°`);
+     const tw=tip.node().offsetWidth;tip.style('left',Math.max(0,Math.min(w-tw,x(r.d)-tw/2))+'px').style('top','0px');})
+   .on('mouseleave',()=>tip.style('display','none'));
+});
+const fmt=(v,d)=>v===''||v==null?'':d3.format('.'+d+'f')(+v);
+const dm=d3.utcFormat('%b %-d, %Y');
+const day=s=>s?dm(new Date(s+'T00:00:00Z')):'';
+dash.draw('sitesrows',tb=>{
+  const g=dash.data('air_sites');
+  if(!ok(g)){tb.replaceChildren();return;}
+  tb.replaceChildren(...g.data.map(r=>{
+    const tr=document.createElement('tr');tr.dataset.key=r.loc;
+    const cells=[[r.site],[r.county],[day(r.first)],[day(r.last)],[fmt(r.pm_mean,1),1],[fmt(r.pm_max,0),1],[day(r.pm_max_day)],[fmt(r.no_mean,1),1],[fmt(r.no_max,0),1],[fmt(r.co_mean,2),1]];
+    cells.forEach(c=>{const td=document.createElement('td');if(c[1])td.className='n';td.textContent=c[0];tr.appendChild(td);});
+    return tr;}));
+});
+dash.draw('noiserows',tb=>{
+  const g=dash.data('noise');
+  if(!ok(g)){tb.replaceChildren();return;}
+  tb.replaceChildren(...g.data.map(r=>{
+    const tr=document.createElement('tr');tr.dataset.key=r.id;
+    ['site','level','position','freq','instrument','by','date','tier','source'].forEach(k=>{const td=document.createElement('td');
+      if(k==='tier'){const b=document.createElement('span');b.className='badge';b.textContent=r[k];td.appendChild(b);}else td.textContent=r[k];tr.appendChild(td);});
+    return tr;}));
+});
+})();
+</script>
